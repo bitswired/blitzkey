@@ -23,6 +23,7 @@ impl TypeTestView {
     fn get_lines(&self, s: &State) -> Vec<Line<'_>> {
         let mut rres = Vec::new();
         let mut current = Vec::new();
+        let mut cursor_line = 0;
 
         let state = &s.type_test;
 
@@ -52,6 +53,7 @@ impl TypeTestView {
             if i == state.cursor {
                 let j = current.len() - 1;
                 current[j] = current[j].clone().bg(Color::Blue);
+                cursor_line = rres.len();
             }
 
             if (state.target.get(i).unwrap() == &'\n') {
@@ -59,7 +61,21 @@ impl TypeTestView {
                 current.clear();
             }
         }
-        rres
+
+        let half_context = 5;
+        // Get a slice of 3 line before and 3 lines after the line cursor
+        let start = if cursor_line < half_context {
+            0
+        } else {
+            cursor_line - half_context
+        };
+        let end = if cursor_line + half_context > rres.len() {
+            rres.len()
+        } else {
+            cursor_line + half_context
+        };
+
+        rres[start..end].to_vec()
     }
 }
 
