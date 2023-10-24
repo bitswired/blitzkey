@@ -23,12 +23,14 @@ fn main() -> Result<()> {
     let mut terminal = Terminal::new(CrosstermBackend::new(stderr()))?;
     terminal.clear()?;
 
-    let typeTestViewComponent = ui::TypeTestView::new();
+    let type_test_view_component = ui::TypeTestView::new();
 
     loop {
         terminal.draw(|frame| {
             match &state.current_view {
-                state::View::TypeTest => typeTestViewComponent.render(&state, frame, frame.size()),
+                state::View::TypeTest => {
+                    type_test_view_component.render(&state, frame, frame.size())
+                }
                 _ => {}
             };
         })?;
