@@ -1,19 +1,18 @@
 use std::vec;
 
 use ratatui::{
-    layout,
     prelude::{Backend, Constraint, Direction, Layout, Rect},
-    style::{Color, Modifier, Style, Stylize},
-    text::{Line, Span, Spans, Text},
+    style::{Color, Style, Stylize},
+    text::{Line, Span},
     widgets::{Block, Borders, Cell, Padding, Paragraph, Row, Table, Wrap},
     Frame,
 };
 
 use crate::{
-    keyboard::{self, Keyboard},
+    keyboard::{Keyboard},
     state::{self, ElementValue},
 };
-use state::{Action, State};
+use state::{State};
 
 fn centered_rect(r: Rect, percent_x: u16, percent_y: u16) -> Rect {
     let popup_layout = Layout::default()
@@ -93,7 +92,7 @@ impl<'a> TypeTestView<'a> {
                 let line = &l.1;
 
                 let spans = line.iter().map(|e| {
-                    let mut style = Style::default().fg(Color::White);
+                    let style = Style::default().fg(Color::White);
                     let c = match e.target {
                         ElementValue::Char(c) => c,
                         ElementValue::Newline => '↵',
@@ -115,7 +114,7 @@ impl<'a> TypeTestView<'a> {
 }
 
 impl<B: Backend> Component<B> for TypeTestView<'_> {
-    fn render(&mut self, state: &State, frame: &mut Frame<B>, rect: Rect) {
+    fn render(&mut self, state: &State, frame: &mut Frame<B>, _rect: Rect) {
         if self.render_cache.is_none() {
             self.build_render_cache(state);
         }
@@ -161,7 +160,7 @@ impl<B: Backend> Component<B> for TypeTestView<'_> {
             .style
             .bg = Some(Color::Blue);
 
-        let area = frame.size();
+        let _area = frame.size();
 
         let main_layout = Layout::default()
             .direction(Direction::Horizontal)

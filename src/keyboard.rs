@@ -1,6 +1,6 @@
-use std::{collections::HashMap, hash::Hash};
+use std::{collections::HashMap};
 
-use ratatui::text::{Line, Span};
+
 
 use crate::utils::read_file_to_string;
 
