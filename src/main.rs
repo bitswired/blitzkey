@@ -39,12 +39,9 @@ fn main() -> Result<()> {
         state.type_test.keyboard.tick();
 
         terminal.draw(|frame| {
-            match &state.current_view {
-                state::View::TypeTest => {
-                    type_test_view_component.render(&state, frame, frame.size())
-                }
-                _ => {}
-            };
+            if let state::View::TypeTest = state.current_view {
+                type_test_view_component.render(&state, frame, frame.size())
+            }
         })?;
 
         if event::poll(std::time::Duration::from_millis(100))? {

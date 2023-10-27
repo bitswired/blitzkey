@@ -36,7 +36,7 @@ pub struct TypeTestState {
 
 fn get_lines(target: String) -> Vec<Line> {
     target
-        .split("\n")
+        .split('\n')
         .map(|line| {
             let mut trimmed_line = line.trim_start();
             let padding = line.len() - trimmed_line.len();

@@ -9,10 +9,10 @@ use ratatui::{
 };
 
 use crate::{
-    keyboard::{Keyboard},
+    keyboard::Keyboard,
     state::{self, ElementValue},
 };
-use state::{State};
+use state::State;
 
 fn centered_rect(r: Rect, percent_x: u16, percent_y: u16) -> Rect {
     let popup_layout = Layout::default()
@@ -184,11 +184,9 @@ impl<B: Backend> Component<B> for TypeTestView<'_> {
         let n_lines = l.len() as i32;
 
         let half_context = 10;
-        let mut i: i32 = 0;
-        let mut j: i32 = 0;
 
-        j = row as i32 + half_context;
-        i = row as i32 - half_context;
+        let mut j = row as i32 + half_context;
+        let mut i = row as i32 - half_context;
         if i < 0 {
             j -= i;
             i = 0;
