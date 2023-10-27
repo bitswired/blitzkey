@@ -1,17 +1,8 @@
 use clap::{arg, command, Command};
-use std::{
-    fs::File,
-    io::{self, Read},
-};
+
+use crate::utils::read_file_to_string;
 
 // --------------------------------
-
-fn read_file_to_string(path: &str) -> io::Result<String> {
-    let mut file = File::open(path)?;
-    let mut contents = String::new();
-    let x = file.read_to_string(&mut contents)?;
-    Ok(contents)
-}
 
 pub fn main() -> Option<String> {
     let matches = command!() // requires `cargo` feature

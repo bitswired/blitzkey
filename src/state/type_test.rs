@@ -1,37 +1,13 @@
-pub enum StateError {
-    NoActionYet,
-}
+use super::actions::{Action, TimedAction};
+use super::app_state::StateError;
+use crate::keyboard::Keyboard;
 
-#[derive(Debug, Clone)]
-pub enum Action {
-    Char(char),
-    Backspace,
-    Enter,
-    SetTarget(String),
-}
-#[derive(Debug, Clone)]
-pub struct TimedAction {
-    action: Action,
-    time: u128,
-}
-
-pub struct HomeState {}
 pub struct TypeTestState {
     pub cursor: usize,
     pub target: Vec<char>,
     pub player_moves: Vec<char>,
     pub actions: Vec<TimedAction>,
-}
-
-pub enum View {
-    Home,
-    TypeTest,
-}
-
-pub struct State {
-    pub current_view: View,
-    pub home: HomeState,
-    pub type_test: TypeTestState,
+    pub keyboard: Keyboard,
 }
 
 pub struct StateStats {
@@ -44,8 +20,18 @@ impl TypeTestState {
     pub fn dispatch(&mut self, action: TimedAction) {
         match &action.action {
             Action::Char(c) => {
-                self.cursor += 1;
-                self.player_moves.push(*c);
+                if self.target[self.cursor] == '\n' {
+                    self.player_moves.push(*c);
+                    self.cursor += 1;
+                    while self.target[self.cursor] == ' ' {
+                        self.player_moves.push(' ');
+                        self.cursor += 1;
+                    }
+                } else {
+                    self.player_moves.push(*c);
+                    self.cursor += 1;
+                }
+                self.keyboard.key_pressed(*c);
             }
 
             Action::Backspace => {
@@ -56,8 +42,17 @@ impl TypeTestState {
             }
 
             Action::Enter => {
-                self.cursor += 1;
-                self.player_moves.push('\n');
+                if self.target[self.cursor] == '\n' {
+                    self.player_moves.push('\n');
+                    self.cursor += 1;
+                    while self.target[self.cursor] == ' ' {
+                        self.player_moves.push(' ');
+                        self.cursor += 1;
+                    }
+                } else {
+                    self.player_moves.push('\n');
+                    self.cursor += 1;
+                }
             }
 
             Action::SetTarget(s) => {
@@ -125,37 +120,6 @@ impl TypeTestState {
             aps: self.actions_per_seconds(),
             precision,
             words_per_minute,
-        }
-    }
-}
-
-impl State {
-    pub fn new() -> State {
-        State {
-            current_view: View::TypeTest,
-            home: HomeState {},
-            type_test: TypeTestState {
-                cursor: 0,
-                target: Vec::new(),
-                player_moves: Vec::new(),
-                actions: Vec::new(),
-            },
-        }
-    }
-
-    pub fn dispatch(&mut self, action: Action) {
-        let time = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .unwrap()
-            .as_millis();
-
-        // self.actions.push(TimedAction { action, time });
-
-        match self.current_view {
-            View::Home => {}
-            View::TypeTest => {
-                self.type_test.dispatch(TimedAction { action, time });
-            }
         }
     }
 }
