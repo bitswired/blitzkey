@@ -42,20 +42,14 @@ pub struct Keyboard {
 }
 
 impl Keyboard {
-    pub fn new(layout_path: String) -> Result<Keyboard, KeyboardError> {
-        let layout = read_file_to_string(&layout_path);
+    pub fn new(raw_layout: String) -> Result<Keyboard, KeyboardError> {
+        let (layout, touch_map) = parse_layout(raw_layout)?;
 
-        match layout {
-            Ok(layout) => {
-                let (layout, touch_map) = parse_layout(layout)?;
-                Ok(Keyboard {
-                    layout,
-                    touch_map,
-                    active_keys: HashMap::new(),
-                })
-            }
-            Err(_) => Err(KeyboardError::LayoutFileNotFound),
-        }
+        Ok(Keyboard {
+            layout,
+            touch_map,
+            active_keys: HashMap::new(),
+        })
     }
 
     pub fn key_pressed(&mut self, key: char) {

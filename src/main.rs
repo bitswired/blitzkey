@@ -19,11 +19,9 @@ mod ui;
 mod utils;
 
 fn main() -> Result<()> {
+    const KEYBOARD_LAYOUT: &str = include_str!("../resources/layout.txt");
     let target = cli::main();
-    let keyboard = Keyboard::new(
-        "/Users/jimzer/Projects/bitswired/rust-test/typing_game/layout.txt".to_string(),
-    )
-    .unwrap();
+    let keyboard = Keyboard::new(KEYBOARD_LAYOUT.to_string()).unwrap();
     let mut state = State::new(keyboard);
     state.dispatch(Action::SetTarget(target.unwrap()));
 
