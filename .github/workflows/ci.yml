@@ -37,7 +37,7 @@ jobs:
             target: aarch64-apple-darwin
             bin: blitzkey-darwin-arm64
         toolchain:
-          - stable
+          - nightly
     steps:
       - uses: actions/checkout@v3
       - name: Build binary
