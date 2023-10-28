@@ -1,6 +1,6 @@
 use super::actions::{Action, TimedAction};
 use super::home::HomeState;
-use super::type_test_new::TypeTestState;
+use super::type_test::TypeTestState;
 use crate::keyboard::Keyboard;
 
 pub enum StateError {

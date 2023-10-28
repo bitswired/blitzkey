@@ -1,3 +1,5 @@
+#![feature(test)]
+
 use crossterm::{
     event::{self, KeyCode},
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
